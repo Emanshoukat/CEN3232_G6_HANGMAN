@@ -1,4 +1,4 @@
-## Project Description 
+# Project Description 
 
 HANGMAN GAME - 8086 Assembly (EMU 8086)
 A fully functional Hangman word-guessing game written in 8086 Assembly language, designed to run in the EMU 8086 emulator. The game features ASCII art gallows, randomized word selection everytime we play and a complete game loop that runs from start to finish. It is all built on raw x86 interrupts and DOS system calls. 
@@ -23,5 +23,25 @@ Key Procedures:
 - PRINT_WRONG_LETTERS : Lists all incorrect guesses so far.
 - CLEAR_SCREEN : Clears the console via BIOS video interrupt.
 
-   Group Contributions
-MemberReg. NumberModuleContributionsHuraira Minhas01-135232-030Core Game LogicImplemented PICK_WORD with BIOS clock seeding and LCG random selection, wrote PROCESS_GUESS with duplicate detection, win/loss state management via gameOver, wrongCount, and guessedCountEman Shoukat01-135232-017Input & TestingHandled keyboard input loop, uppercase conversion, invalid input rejection, wrote all test cases and verified correct/wrong/duplicate guess paths, debugged Find_Slot logicFatima Asif01-135232-021UI & DisplaysDesigned all 7 ASCII hangman art stages, implemented PRINT_HANGMAN, PRINT_GUESSED_WORD, PRINT_WRONG_LETTERS, CLEAR_SCREEN, and wrote all in-game message strings
+# Group Contributions
+
+Huraira Minhas — 01-135232-030
+- Module: Core Game Logic
+- Implemented "Pick_Word" with BIOS clock seeding and LCG random selection
+- Wrote "Process_Guess" with duplicate detection and win/loss logic
+- Managed "gameOver", "wrongCount", and "guessedCount" state variables
+
+
+Eman Shoukat — 01-135232-017
+- Module: Input & Testing
+- Handled keyboard input loop, uppercase conversion and invalid input rejection
+- Wrote all test cases and verified correct, wrong and duplicate guess paths
+- Debugged the "Find_Slot" logic in wrong guess handling
+
+
+Fatima Asif — 01-135232-021
+- Module: UI & Displays
+- Designed all 7 ASCII hangman art stages in the data segment
+- Implemented "PRINT_HANGMAN", "Print_Guessed_Word", "Print_Wrong_Letters" and "Clear_Screen"
+- Wrote all in-game message strings and formatted the game screen layout
+
