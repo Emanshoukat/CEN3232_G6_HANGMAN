@@ -46,7 +46,58 @@ msgTries   db 13, 10, "Tries left: $"
 msgNewline db 13, 10, "$"
 msgEnter   db 13, 10, "Press any key to exit...", "$"
 
-
+;Hangman Stages 
+hang0 db '  +---+  ', 13, 10,
+           db '  |   |  ', 13, 10,
+           db '  |      ', 13, 10,
+           db '  |      ', 13, 10,
+           db '  |      ', 13, 10,
+           db '  |      ', 13, 10,
+           db '=========$'
+hang1 db '  +---+  ', 13, 10,
+           db '  |   |  ', 13, 10,
+           db '  |   O  ', 13, 10,
+           db '  |      ', 13, 10,
+           db '  |      ', 13, 10,
+           db '  |      ', 13, 10,
+           db '=========$'
+hang2 db '  +---+  ', 13, 10,
+           db '  |   |  ', 13, 10,
+           db '  |   O  ', 13, 10,
+           db '  |   |  ', 13, 10,
+           db '  |      ', 13, 10,
+           db '  |      ', 13, 10,
+           db '=========$'
+hang3 db '  +---+  ', 13, 10,
+           db '  |   |  ', 13, 10,
+           db '  |   O  ', 13, 10,
+           db '  |  /|  ', 13, 10,
+           db '  |      ', 13, 10,
+           db '  |      ', 13, 10,
+           db '=========$'
+hang4 db '  +---+  ', 13, 10,
+           db '  |   |  ', 13, 10,
+           db '  |   O  ', 13, 10,
+           db '  |  /|\ ', 13, 10,
+           db '  |      ', 13, 10,
+           db '  |      ', 13, 10,
+           db '=========$'
+hang5 db '  +---+  ', 13, 10,
+           db '  |   |  ', 13, 10,
+           db '  |   O  ', 13, 10,
+           db '  |  /|\ ', 13, 10,
+           db '  |  /   ', 13, 10,
+           db '  |      ', 13, 10,
+           db '=========$'
+hang6 db '  +---+  ', 13, 10,
+           db '  |   |  ', 13, 10,
+           db '  |   O  ', 13, 10,
+           db '  |  /|\ ', 13, 10,
+           db '  |  / \ ', 13, 10,
+           db '  |      ', 13, 10,
+           db '=========$'
+hangPtrs dw offset hang0, offset hang1, offset hang2, offset hang3, 
+dw offset hang4, offset hang5, offset hang6
 
 .code
 main proc
@@ -185,5 +236,118 @@ Clear_Wrong:
 
 
 Pick_Word endp
+
+Print_Hangman proc 
+push ax 
+push bx 
+push dx 
+xor bx, bx 
+mov bl, wrongCount
+shl bx, 1
+mov dx, hangPtrs[bx]
+mov ah, 09h
+int 21h
+pop dx
+pop bx
+pop ax
+ret 
+Print_Hangman endp 
+
+Print_Guessed_Word proc
+push ax
+push dx
+push si 
+lea si, guessedWord
+
+pg_loop:
+mov al, [si]
+cmp al, '$'
+je pg_done 
+mov dl, al 
+mov ah, 02h
+int 21h 
+mov dl, ' '
+mov ah, 02h
+int 21h 
+inc si 
+jmp pg_loop 
+
+pg_done:
+pop si 
+pop dx
+pop ax
+ret 
+Print_Guessed_Word endp
+
+Print_Wrong_Letters proc
+push ax
+push cx
+push dx 
+push si 
+lea si, wrongGuesses
+mov cx, 20
+
+pw_loop:
+mov al, [si]
+cmp al, 0 
+je pw_done
+mov dl, al 
+mov ah, 02h
+int 21h
+inc si 
+loop pw_loop 
+
+pw_done:
+pop si 
+pop dx
+pop cx
+ret 
+Print_Wrong_Letters endp 
+
+Print_Current_Word proc
+push ax
+push dx
+push si 
+lea si, currentWord
+
+pcw_loop:
+mov al, [si]
+cmp al, '$'
+je pcw_done 
+mov dl, al 
+mov ah, 02h
+int 21h 
+inc si 
+imp pcw_loop 
+
+pcw_done:
+pop si 
+pop dx 
+pop ax
+ret
+Print_Current_Word endp
+
+Clear_Screen proc 
+push ax
+push bx
+push cx
+push dx
+mov ah, 06h
+mov al, 0
+mov bh, 07h
+mov cx, 0000h
+mov dx, 184fh
+int 10h 
+mov ah, 02h
+mov bh, 0 
+mov dx, 0000h 
+int 10h
+pop dx
+pop cx
+pop bx
+pop ax 
+ret 
+Clear_Screen endp
+
 
 end main
